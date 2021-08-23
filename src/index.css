@@ -1,0 +1,26 @@
+.parent {
+  position: fixed;
+  top: 25%;
+  right: 0%;
+  display: grid;
+  transform: translatez(-10vw) rotatez(-45deg);
+  perspective: 100px;
+  transform-style: preserve-3d;
+  place-items: center;
+  margin: 0 auto;
+  width: 50vw;
+  background-color: hsla(300, 70%, 80%, 1);
+  filter: url('#gooey');
+  webkit-filter: url('#gooey');
+}
+
+.child {
+  position: absolute;
+  color: transparent;
+  background-color: hsla(120, 70%, 65%, 0.5);
+  width: 50px;
+  font-size: 0.7rem;
+  border-radius: 20%;
+  display: grid;
+  place-content: center;
+}
