@@ -24,3 +24,19 @@
   display: grid;
   place-content: center;
 }
+
+.child-container {
+  position: fixed;
+  top: 0%;
+  right: 0%;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  /* transform: translatez(-10vw) rotatez(-45deg); */
+  /* perspective: 100px;
+  transform-style: preserve-3d; */
+  place-items: center;
+  margin: 0 auto;
+  filter: url('#gooey');
+  -webkit-filter: url('#gooey');
+}
