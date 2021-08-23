@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import chroma from 'chroma';
+import chroma from 'chroma-js';
 
 const colors = chroma.scale(['hsla(300, 70%, 80%, 0.5)', 'hsla(120, 70%, 65%, 0.5)']).mode('lch').colors(6);
 
