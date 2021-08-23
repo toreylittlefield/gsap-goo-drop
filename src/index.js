@@ -7,7 +7,9 @@ const colors = chroma.scale(['hsla(300, 70%, 80%, 0.5)', 'hsla(120, 70%, 65%, 0.
 
 const pickRandomColor = () => colors[Math.floor(colors.length * Math.random())];
 
-const allChilds = () => document.querySelectorAll('.child');
+const allChilds = () => document.querySelectorAll('[id*=child]') ?? [1];
+
+const childContainer = () => document.querySelector('.child-container');
 
 // runs after the first timeline is complete
 const drip = () => {
@@ -17,7 +19,13 @@ const drip = () => {
   parent.appendChild(newChild);
   const tl = gsap
     .timeline({
-      onComplete: drip,
+      onComplete: () => {
+        document.body.addEventListener('click', drip, { once: true });
+        console.count('done');
+
+        gsap.set(childContainer(), { scale: 0.5, transform: gsap.getProperty(parent, 'transform') });
+        childContainer().appendChild(newChild);
+      },
       defaults: { ease: 'elastic.out(1, 0.3)', duration: 1.1 },
     })
     .set(newChild, {
@@ -42,10 +50,12 @@ const drip = () => {
     .to(
       newChild,
       {
-        yPercent: gsap.utils.random(-500, -1200),
+        yPercent: gsap.utils.random(0, -2000),
+        xPercent: gsap.utils.random(500, -5000),
+        // x: -2000,
+        // y: 100,
         rotateZ: -120,
         yoyo: true,
-        xPercent: gsap.utils.random(0, -2000),
         scale: 9 + gsap.utils.random(-3, 2),
         ease: 'bounce.out',
         duration: 2,
@@ -60,25 +70,25 @@ const drip = () => {
         scale: 4,
       },
       {
-        yPercent: -50,
-        xPercent: 100,
-        scale: 0.8,
+        yPercent: -90,
+        xPercent: 18,
+        scale: 0.5,
         ease: 'expo.out',
-        duration: 2.5,
+        duration: 3,
       },
       '-=2.8'
     )
     .to(
       '.parent',
       {
-        yPercent: -98,
-        xPercent: 18,
-        scale: 0.5,
         ease: 'bounce.out',
         duration: 1.7,
       },
       '-=1.8'
     );
+
+  tl.timeScale(3);
+
   allChilds().forEach((child) =>
     tl.to(
       child,
@@ -86,7 +96,7 @@ const drip = () => {
         translateY: gsap.utils.random(-100, 100),
         x: gsap.utils.random(-5, 5),
         y: gsap.utils.random(-5, 5),
-        // rotateZ: gsap.utils.random(-50, 50),
+        rotateZ: gsap.utils.random(-50, 50),
         ease: 'bounce.out',
         duration: 2,
         yoyo: true,
@@ -180,6 +190,6 @@ tl.add('drip')
     },
     '-=2.8'
   );
-// tl.progress(0.99);
+tl.progress(0.99);
 tl.play();
 // tl.kill()
