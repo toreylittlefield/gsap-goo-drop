@@ -8,7 +8,7 @@
   transform-style: preserve-3d;
   place-items: center;
   margin: 0 auto;
-  width: 50vw;
+  width: 40vw;
   background-color: hsla(300, 70%, 80%, 1);
   filter: url('#gooey');
   -webkit-filter: url('#gooey');
