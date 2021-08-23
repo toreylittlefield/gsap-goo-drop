@@ -81,7 +81,7 @@ const drip = () => {
     tl.to(
       child,
       {
-        tranzlateY: gsap.utils.random(-100, 100),
+        translateY: gsap.utils.random(-100, 100),
         x: gsap.utils.random(-5, 5),
         y: gsap.utils.random(-5, 5),
         // rotateZ: gsap.utils.random(-50, 50),
@@ -178,6 +178,6 @@ tl.add('drip')
     },
     '-=2.8'
   );
-tl.progress(0.99);
+// tl.progress(0.99);
 tl.play();
 // tl.kill()
