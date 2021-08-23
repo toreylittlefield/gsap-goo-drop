@@ -2,10 +2,10 @@
   "name": "gsap-goo-drop",
   "version": "1.0.0",
   "description": "playing with gooey effects and gsap in javscript",
-  "source": "src/index.js",
   "main": "dist/main.js",
+  "source": "src/index.html",
   "scripts": {
-    "watch": "parcel watch",
+    "start": "parcel",
     "build": "parcel build"
   },
   "keywords": [
