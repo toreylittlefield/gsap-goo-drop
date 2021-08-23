@@ -2,15 +2,17 @@ import gsap from 'gsap';
 import chroma from 'chroma-js';
 import './index.css';
 
+// hsla from the parent / child css bg color
 const colors = chroma.scale(['hsla(300, 70%, 80%, 0.5)', 'hsla(120, 70%, 65%, 0.5)']).mode('lch').colors(6);
 
 const pickRandomColor = () => colors[Math.floor(colors.length * Math.random())];
 
 const allChilds = () => document.querySelectorAll('.child');
 
+// runs after the first timeline is complete
 const drip = () => {
   const newChild = document.querySelector('.child').cloneNode(true);
-  newChild.id = 'child-one';
+  newChild.id = `child-${allChilds().length}`;
   const parent = document.querySelector('.parent');
   parent.appendChild(newChild);
   const tl = gsap
