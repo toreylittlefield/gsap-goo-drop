@@ -11,7 +11,7 @@
   width: 50vw;
   background-color: hsla(300, 70%, 80%, 1);
   filter: url('#gooey');
-  webkit-filter: url('#gooey');
+  -webkit-filter: url('#gooey');
 }
 
 .child {
