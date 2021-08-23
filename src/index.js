@@ -17,18 +17,26 @@ const drip = () => {
   newChild.id = `child-${allChilds().length}`;
   const parent = document.querySelector('.parent');
   parent.appendChild(newChild);
-  const tl = gsap
-    .timeline({
-      onComplete: () => {
-        document.body.addEventListener('click', drip, { once: true });
-        console.count('done');
+  const master = gsap.timeline({
+    onComplete: () => {
+      document.body.addEventListener(
+        'click',
+        () => {
+          drip();
+        },
+        { once: true }
+      );
+      console.count('done');
 
-        gsap.set(childContainer(), { scale: 0.5, transform: gsap.getProperty(parent, 'transform') });
-        childContainer().appendChild(newChild);
-      },
-      defaults: { ease: 'elastic.out(1, 0.3)', duration: 1.1 },
-    })
-    .set(newChild, {
+      gsap.set(childContainer(), { scale: 0.5, transform: gsap.getProperty(parent, 'transform') });
+      childContainer().appendChild(newChild);
+    },
+    defaults: { ease: 'elastic.out(1, 0.3)', duration: 1.1 },
+  });
+
+  const dripStart = () => {
+    const tl = gsap.timeline();
+    tl.set(newChild, {
       scale: 1,
       x: 0,
       y: 0,
@@ -36,24 +44,27 @@ const drip = () => {
       backgroundColor: pickRandomColor(),
       zIndex: -1 * allChilds().length,
     })
-    .to(newChild, {
-      xPercent: 20,
-      yPercent: 100,
-    })
-    .to(newChild, {
-      yPercent: 170,
-      scale: 0.7,
-      xPercent: -500,
-      ease: 'expo.in',
-      duration: 2,
-    })
-    .to(
+      .to(newChild, {
+        xPercent: 20,
+        yPercent: 100,
+      })
+      .to(newChild, {
+        yPercent: 170,
+        scale: 0.7,
+        xPercent: -500,
+        ease: 'expo.in',
+        duration: 2,
+      });
+    return tl;
+  };
+
+  const dripDropChild = () => {
+    const tl = gsap.timeline();
+    tl.to(
       newChild,
       {
         yPercent: gsap.utils.random(0, -2000),
         xPercent: gsap.utils.random(500, -5000),
-        // x: -2000,
-        // y: 100,
         rotateZ: -120,
         yoyo: true,
         scale: 9 + gsap.utils.random(-3, 2),
@@ -61,8 +72,12 @@ const drip = () => {
         duration: 2,
       },
       '-=.1'
-    )
-    .fromTo(
+    );
+    return tl;
+  };
+  const dripDropToBounce = () => {
+    const tl = gsap.timeline();
+    tl.fromTo(
       '.parent',
       {
         yPercent: -100,
@@ -77,33 +92,45 @@ const drip = () => {
         duration: 3,
       },
       '-=2.8'
-    )
-    .to(
+    ).to(
       '.parent',
       {
+        yPercent: -20,
+        xPercent: 18,
         ease: 'bounce.out',
         duration: 1.7,
       },
       '-=1.8'
     );
+    return tl;
+  };
 
-  tl.timeScale(3);
+  const bounceChildren = () => {
+    const tl = gsap.timeline();
+    allChilds().forEach((child) =>
+      tl.to(
+        child,
+        {
+          translateY: gsap.utils.random(-100, 100),
+          x: gsap.utils.random(-5, 5),
+          y: gsap.utils.random(-5, 5),
+          rotateZ: gsap.utils.random(-50, 50),
+          ease: 'bounce.out',
+          duration: 2,
+          yoyo: true,
+        },
+        0
+        // parseFloat(master.endTime() - 1)
+      )
+    );
+  };
 
-  allChilds().forEach((child) =>
-    tl.to(
-      child,
-      {
-        translateY: gsap.utils.random(-100, 100),
-        x: gsap.utils.random(-5, 5),
-        y: gsap.utils.random(-5, 5),
-        rotateZ: gsap.utils.random(-50, 50),
-        ease: 'bounce.out',
-        duration: 2,
-        yoyo: true,
-      },
-      3.6
-    )
-  );
+  master.add(dripStart());
+  master.add(dripDropChild(), '-=.1');
+  master.add(dripDropToBounce(), '-=2.8');
+  //   master.add(bounceChildren(), '+=1');
+  //   master.smoothChildTiming(true);
+  master.timeScale(2);
 };
 let parentPath = { scale: 4, xPercent: -30, yPercent: 30, ease: 'none' };
 const tl = gsap
